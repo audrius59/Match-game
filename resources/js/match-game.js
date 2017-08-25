@@ -1,4 +1,5 @@
 var MatchGame = {};
+
 $(document).ready(function() {
 	MatchGame.renderCards(MatchGame.generateCardValues(), $('#game'));
 });
@@ -46,13 +47,15 @@ MatchGame.renderCards = function(cardValues, $game) {
 	'hsl(310, 85%, 65%)',
 	'hsl(360, 85%, 65%)'
 	];
+	
 	$game.html('');
 	for (var i = 0; i < cardValues.length; i++) {
 		var $card = $('<div class="col-xs-3 card"></div>');
 		$card.data('value', cardValues[i]);
 		$card.data('flipped', false);
-		$card.data('color', colArray[cardValues[i] - 1]);
+		$card.data('color', colArray[cardValues[i]-1]);
 		$game.append($card);
+		
 		$card.click(function() {
 			MatchGame.flipCard($(this), $game);
 		});
@@ -67,7 +70,9 @@ MatchGame.renderCards = function(cardValues, $game) {
 MatchGame.flipCard = function($card, $game) {
 	
 	var $flippedCards = $game.data('flippedCards');
-	if($card.data('flipped')) {
+	var $gameFlippedCards = $game.data('gameFlippedCards');
+	
+	if ($card.data('flipped') === true) {
 		return;
 	} 
 	else {
@@ -76,14 +81,26 @@ MatchGame.flipCard = function($card, $game) {
 		$card.data('flipped', true);
 		$flippedCards.push($card);
 	}
-	if ($flippedCards.length >= 2) {
-		if ($flippedCards[0] === $flippedCards[1]) {
+	if ($flippedCards.length == 2) {
+		if ($flippedCards[0].data('color') === $flippedCards[1].data('color')) {
+			
 			$flippedCards[0].css('background-color','rgb(153,153,153)').css('color','rgb(204,204,204)');
 			$flippedCards[1].css('background-color','rgb(153,153,153)').css('color','rgb(204,204,204)');
+			$flippedCards.length = 0;
+			$gameFlippedCards.push($card[0], $card[1]);
+			
 		} else {
-			$card.data('flipped', false);
+			$('.card').off('click');
+			setTimeout(function() {
+				$flippedCards[0].html('').css('background-color', 'rgb(32,64,86)').data('flipped', false);
+				$flippedCards[1].html('').css('background-color', 'rgb(32,64,86)').data('flipped', false);
+				$flippedCards.length = 0;
+				$('.card').click(function() {
+					MatchGame.flipCard($(this), $game);
+				});
+			}, 450);
 		}
-	}
+	} else return;
 };
 
 
