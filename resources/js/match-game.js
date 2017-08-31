@@ -18,6 +18,7 @@ MatchGame.generateCardValues = function () {
 	for (var i = 1; i <= 8; i++) {
 		arr.push([i],[i]);
 	}
+	// Generating array shuffeled by  'Fisher-Yates Shuffle'
 	var m = arr.length, t, j;
 	while (m) {
 		j = Math.floor(Math.random() * m--);
@@ -36,7 +37,7 @@ MatchGame.generateCardValues = function () {
 MatchGame.renderCards = function(cardValues, $game) {
 	$game.data('flippedCards', []);
 	$game.data('gameFlippedCards',[]);
-	
+	// Color Array
 	var colArray = [
 	'hsl(25, 85%, 65%)',
 	'hsl(55, 85%, 65%)',
@@ -48,10 +49,10 @@ MatchGame.renderCards = function(cardValues, $game) {
 	'hsl(360, 85%, 65%)'
 	];
 	
-	$game.html('');
+	$game.html(''); // Clearing old game
 	for (var i = 0; i < cardValues.length; i++) {
 		var $card = $('<div class="col-xs-3 card"></div>');
-		$card.data('value', cardValues[i]);
+		$card.data('value', cardValues[i]); // Added data properties
 		$card.data('flipped', false);
 		$card.data('color', colArray[cardValues[i]-1]);
 		$game.append($card);
