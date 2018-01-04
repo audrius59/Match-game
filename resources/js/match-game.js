@@ -105,6 +105,7 @@ MatchGame.flipCard = function($card, $game) {
 			}, 450);
 		}
 	} else return;
+	}
 };
 
 
